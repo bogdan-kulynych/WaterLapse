@@ -6,9 +6,73 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        <style>
+          html {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+          }
+          body {
+            margin: 0;
+            padding: 10px 20px;
+            width: 600px;
+            margin: 0 auto;
+            background-color: white;
+          }
+          img {
+            display: block;
+            max-width: 500px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+          }
+          li {
+            margin-bottom: 40px;
+          }
+          header {
+            display: block;
+            text-align: center;
+            margin-bottom: 60px;
+          }
+          h1 {
+            font-size: 60px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+          }
+        </style>
     </head>
     <body>
-      <h1>Space App Challenge</h1>
+      <header>
+        <h1>Water Lapse</h1>
+        <p><a href="https://github.com/bogdan-kulynych">Bogdan Kulynych</a>, <a href="https://github.com/dira">Irina Dumitrascu</a>. <a href="http://spaceappschallenge.org">NASA Space App Challenge</a>, April 2013, Krakow</p>
+      </header>
+
+      <h2>We started from:</h2>
+      <p>The <a href="http://spaceappschallenge.org/challenge/seeing-water-from-space/">Seeing Water From Space</a> challenge.</p>
+
+      <p>We could not find / understand data for ground water bodies, or salt flats, or ice. The precipitation data is easier to understand so we shifted focus from the Chile altiplano to the whole world, and from water bodies to precipitation. :)</p>
+
+
+      <h2>We made:</h2>
+
+      <ul>
+        <li>
+        <p>A <a href="/index-animation.html">time-lapse animation of the precipitation data around the world from 1901 to 2012</a></p>
+          <a href="/index-animation.html"><img src='/images/precipitation.png'/></a>
+          <p>Data from the GPCC project, <a href="ftp://ftp.dwd.de/pub/data/gpcc/html/fulldata_v6_doi_download.html">Full Data Reanalysis Version 6</a>
+          <p>Warning: It will download <strong>250MB</strong>.</p>
+        </li>
+        <li>
+        <p>A page where you can <a href="/world-precipitation">visually compare the precipitation in each month of the year, from 1901 to 2012</a></p>
+          <a href="/world-precipitation"><img src='/images/precipitation-evolution.png'/></a>
+          <p>Data from the GPCC project, <a href="ftp://ftp.dwd.de/pub/data/gpcc/html/fulldata_v6_doi_download.html">Full Data Reanalysis Version 6</a>.
+          <p>Images created with <a href="http://www.giss.nasa.gov/tools/panoply/">Panoply</a>.
+          <p>Warning: It will download 1300 images, <strong>100MB</strong> in total.</p>
+        </li>
+      </ul>
+
+      <p>We also documented <a href="https://spaceapps.hackpad.com/WaterLapse-oeX25T0Rzi7">the resources we found, the problems and difficulties we encountered</a>.</p>
+
+
     </body>
 </html>
 
