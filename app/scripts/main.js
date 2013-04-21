@@ -23,7 +23,9 @@
     var scale = get_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
     $('body').addClass('loaded');
 
-    plot_array(ctx, data[0]['data'], scale);
+    // XXX this should be in the data
+    var resolution = 2.5;
+    plot_array(ctx, data[0]['data'], resolution, color_scale);
   });
 
   $('body').bind('mousemove click', function() {
@@ -80,10 +82,10 @@
       }
     }
     var size = max - min;
-    var step = size/colors.length;
-    var scale = []
-    for (var i=0; i<colors.length; i++) {
-      scale.push([min + (i + 1) * step, colors[i]]);
+    var step = size/(colors.length-1);
+    var scale = [[min, colors[0]]]
+    for (var i=1; i<colors.length; i++) {
+      scale.push([min + i * step, colors[i]]);
     }
     return scale;
   }
@@ -98,16 +100,23 @@
     }
   }
 
-  var plot_array = function(ctx, array, scale) {
+  var plot_array = function(ctx, array, resolution, color_scale) {
     for (var i = 0; i < array.length; ++i) {
       var obj = array[i];
 
-      coords = convert_coordinates(obj['lat'], obj['lon']);
-      x = coords[0], y = coords[1];
+      var coords = convert_coordinates(obj['lat'], obj['lon']);
+      var x = Math.round(coords[0]); var y = Math.round(coords[1]);
+      var coords2 = convert_coordinates(obj['lat'] + resolution, obj['lon'] + resolution);
+      var x2 = Math.round(coords2[0]); var y2 = Math.round(coords2[1]);
+      var color = get_color(obj['value'], color_scale)
 
       ctx.beginPath();
-      ctx.arc(x, y, 4, 0, 2 * Math.PI, true);
-      ctx.fillStyle = get_color(obj['value'], scale)
+      ctx.moveTo(x, y);
+      ctx.lineTo(x2, y);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x, y2);
+      ctx.lineTo(x, y);
+      ctx.fillStyle = color;
       ctx.fill();
     }
   }
