@@ -40,21 +40,21 @@
 
   // http://stackoverflow.com/questions/14034455/translating-lat-long-to-actual-screen-x-y-coordinates-on-a-equirectangular-map
   var equirectangular = function(latitude, longitude) {
-    x = ((longitude + 180) * (width  / 360));
-    y = (((latitude * -1) + 90) * (height/ 180));
+    var x = ((longitude + 180) * (width  / 360));
+    var y = (((latitude * -1) + 90) * (height/ 180));
     return [x, y]
   };
 
   // http://stackoverflow.com/questions/14329691/covert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection
   var mercator = function(latitude, longitude) {
-    x = (width*(180+longitude)/360)%width+(width/2);
+    var x = (width*(180+longitude)/360)%width+(width/2);
 
     // convert from degrees to radians
-    latRad = latitude*Math.PI/180;
+    var latRad = latitude*Math.PI/180;
 
     // get y value
-    mercN = Math.log(Math.tan((Math.PI/4)+(latRad/2)));
-    y     = (height/2)-(width*mercN/(2*PI));
+    var mercN = Math.log(Math.tan((Math.PI/4)+(latRad/2)));
+    var y     = (height/2)-(width*mercN/(2*PI));
     return [x - width / 2, y]
   };
 
@@ -73,8 +73,8 @@
     var max = -Infinity;
     for(date_index in data) {
       values = data[date_index].data;
-      for (i in values) {
-        v = values[i].value;
+      for (var i =0; i < values.length; i++) {
+        var v = values[i].value;
         if (v > max) { max = v; }
         if (v < min) { min = v; }
       }
@@ -89,6 +89,7 @@
   }
 
   var get_color = function(value, scale) {
+    var max;
     for (var i=0; i<scale.length; i++) {
       max = scale[i][0];
       if (value <= max) {
