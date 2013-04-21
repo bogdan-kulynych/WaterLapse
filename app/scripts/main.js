@@ -1,12 +1,13 @@
 $(function() {
-  var datasource = '/data/precipitation-small.json';
-  var datessource = '/data/precipitation-small-dates.json';
+  var datasource = '/data/precipitation.json';
+  var datessource = '/data/precipitation-dates.json';
 
-  var animation_delay = 200;
-  var yearskip = 1;
+  var animation_delay = 500;
+  var yearskip = 3;
   var scale = [];
   var timeline_width = 0;
   var current_frame = 0;
+  var dates_count = 0;
   var frames_count = 0;
 
   // http://stackoverflow.com/questions/14034455/translating-lat-long-to-actual-screen-x-y-coordinates-on-a-equirectangular-map
@@ -101,7 +102,7 @@ $(function() {
 
   var move_pointer = function(dx) {
     var pointer = $('#pointer');
-    var x = parseInt(pointer.css('left')) + dx;
+    var x = Math.round(parseInt(pointer.css('left')) + dx);
     if (x <= timeline_width) {
       pointer.stop().animate({
         'left': x + 'px'
@@ -112,7 +113,7 @@ $(function() {
 
   var show_frame = function(r) {
     current_frame = Math.round(r * (frames_count - 1));
-    plot_array(window.ctx, window.data[current_frame], 2.5, scale)
+    plot_array(window.ctx, window.data[current_frame], 2.5, scale);
   };
 
   var next_frame = function(link) {
@@ -157,6 +158,7 @@ $(function() {
     $.getJSON(datessource, function(years) {
       for (var i = 0; i < years.length; ++i) {
         if (parseInt(years[i]) % yearskip == 0) {
+          dates_count++;
           var year = $('<li></li>').html(years[i]);
           $('#slider .timeline').append(year);
         }
