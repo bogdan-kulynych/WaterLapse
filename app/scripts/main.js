@@ -1,8 +1,9 @@
 $(function() {
-  var datasource = '/data/precipitation.json';
-  var datessource = '/data/precipitation-dates.json';
+  var datasource = '/data/precipitation-small.json';
+  var datessource = '/data/precipitation-small-dates.json';
 
-  var yearskip = 4;
+  var animation_delay = 200;
+  var yearskip = 1;
   var scale = [];
   var timeline_width = 0;
   var current_frame = 0;
@@ -91,11 +92,40 @@ $(function() {
     }
   };
 
+  var move_pointer = function(dx) {
+    var pointer = $('#pointer');
+    var x = parseInt(pointer.css('left')) + dx;
+    if (x <= timeline_width) {
+      pointer.stop().animate({
+        'left': x + 'px'
+      });
+      show_frame(x / timeline_width);
+    }
+  }
+
   var show_frame = function(r) {
     current_frame = Math.round(r * (frames_count - 1));
-    console.log(scale);
     plot_array(window.ctx, window.data[current_frame], 2.5, scale)
+  };
+
+  var next_frame = function(link) {
+    if (current_frame < frames_count) {
+      current_frame++;
+      move_pointer(timeline_width / data.length);
+    }
+    if (link) {
+      clearTimeout(window.frame_timeout);
+      window.frame_timeout = setTimeout(function() {
+         next_frame(true);
+      }, animation_delay);
+    }
   }
+
+  var start_animation = function() {
+    window.frame_timeout = setTimeout(function() {
+      next_frame(true);
+    }, animation_delay);
+  };
 
   $.fn.disableSelection = function() {
       return this
@@ -113,11 +143,15 @@ $(function() {
       for (var i = 0; i < years.length; ++i) {
         if (parseInt(years[i]) % yearskip == 0) {
           var year = $('<li></li>').html(years[i]);
-          $('#slider span').append(year);
+          $('#slider .timeline').append(year);
         }
       }
-      timeline_width = $('#slider span').width();
+      timeline_width = $('#slider .timeline').width();
+      console.log(timeline_width);
     });
+    $('#slider').fadeIn('slow');
+
+    start_animation();
 
     // setting map
     var ratio = 1 / 2;
@@ -133,34 +167,18 @@ $(function() {
     window.ctx = canvas[0].getContext("2d");
 
     scale = get_color_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
-    console.log(scale[0][0],
-    scale[scale.length - 1][0]);
     $('body').addClass('loaded');
     plot_array(ctx, data[0], 2.5, scale);
   });
 
-  /*
-  // autohide
-  $('body').bind('mousemove click', function() {
-    var hide_timeout = 500;
-    var fade_timeout = 500;
-
-    $('#slider').fadeIn(fade_timeout);
-    clearTimeout(window.slider_timeout);
-    window.slider_timeout = setTimeout(function() {
-      $('#slider').fadeOut(fade_timeout);
-    }, hide_timeout);
-  }); */
-
-  var pointer = $('<div></div>').attr('id', 'pointer');
+  var pointer = $('<span></span>')
+              .attr('id', 'pointer')
   $('#slider').append(pointer)
               .disableSelection();
 
-  $('#slider').click(function(e) {
-    if (e.pageX <= timeline_width) {
-      pointer.css({'left': e.pageX});
-      show_frame(parseInt(pointer.css('left')) / timeline_width);
-    }
+  $('#slider .timeline').click(function(e) {
+    var dx = e.pageX - parseInt($('#pointer').css('left'));
+    clearTimeout(window.frame_timeout);
+    move_pointer(dx);
   });
-
 });
