@@ -13,11 +13,18 @@ body {
     overflow: hidden;
 }
 
-canvas.map {
+.map {
     background: url(/images/world.jpg) 0 0;
     background-size: 100% 100%;
 }
 
 .loaded {
     background: #000;
+}
+
+#slider {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 2em;
 }
