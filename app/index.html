@@ -18,6 +18,9 @@
             width: 600px;
             margin: 0 auto;
             background-color: white;
+            font-family: sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
           }
           .screenshot {
             display: block;
@@ -28,8 +31,12 @@
             border: 1px solid #ddd;
           }
           .author {
+            display: inline-block;
             margin: 10px;
             vertical-align: top;
+          }
+          .dira {
+            margin-left: 4em;
           }
           li {
             margin-bottom: 40px;
@@ -53,12 +60,9 @@
     <body>
       <header>
         <h1>Water Lapse</h1>
-        <p>
-        <span class='author'><a href="https://github.com/bogdan-kulynych"><img src="https://secure.gravatar.com/avatar/145cca2717d32096af9cf8f7669aad31?s=100"/></a>
-          <a href="https://github.com/bogdan-kulynych">Bogdan Kulynych</a></span>
-        &
-        <span class='author'><a href="https://github.com/dira"><img src="https://secure.gravatar.com/avatar/fbda4e0a1939b1bfda21ac7121bef2de?s=100"/></a>
-          <a href="https://github.com/dira">Irina Dumitrascu</a></span>
+        <p class="authors">
+        <div class='author bogdan'><a href="http://github.com/bogdan-kulynych"><img src="https://secure.gravatar.com/avatar/145cca2717d32096af9cf8f7669aad31?s=100"/><br />Bogdan Kulynych</a></div>
+        <div class='author dira'><a href="http://github.com/dira"><img src="https://secure.gravatar.com/avatar/fbda4e0a1939b1bfda21ac7121bef2de?s=100"/><br />Irina Dumitrascu</a></div>
         </p>
         <a href="http://spaceappschallenge.org">NASA Space App Challenge</a>, April 2013, Krakow</p>
       </header>

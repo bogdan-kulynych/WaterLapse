@@ -127,6 +127,10 @@ $(function() {
     }, animation_delay);
   };
 
+  var stop_animation = function() {
+    clearTimeout(window.frame_timeout);
+  }
+
   $.fn.disableSelection = function() {
       return this
                .attr('unselectable', 'on')
