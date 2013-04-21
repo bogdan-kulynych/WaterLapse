@@ -1,7 +1,7 @@
 $(function() {
   // Warning: The following code is extremely macaronic
-  var datasource = '/data/precipitation.json';
-  var datessource = '/data/precipitation-dates.json';
+  var datasource = 'data/precipitation.json';
+  var datessource = 'data/precipitation-dates.json';
   var colors = ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB'];
 
   var animation_delay = 200;
@@ -116,14 +116,13 @@ $(function() {
       'left': x + 'px',
       'top': ($('#pointer').offset.top - 20) + 'px'
     });
-    console.log(hover.offset());
   }
 
   var show_frame = function(frame) {
     current_frame = frame;
     if (current_frame < frames_count) {
       plot_array(window.ctx, window.data[frame], 2.5, scale);
-      months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       date = months[frame % 12] + ' ' + window.years[Math.floor(frame / 12)];
       $('.hover').html(date);
     }
@@ -177,6 +176,36 @@ $(function() {
     $('#slider').fadeIn('slow');
     $('.animation-controls .play').fadeIn('slow');
 
+    var pointer = $('<span></span>')
+              .attr('id', 'pointer')
+    $('#slider').append(pointer);
+
+    $('#slider .timeline').click(function(e) {
+      playing = false;
+      $('.animation-controls .play').show();
+      $('.animation-controls .stop').hide();
+      clearTimeout(window.frame_timeout);
+      move_pointer(e.pageX);
+    });
+    $('body').bind('mousemove click', function(e) {
+      var controls = $('.animation-controls');
+      controls.fadeIn('fast');
+      clearTimeout(window.fade_timeout);
+      window.fade_timeout = setTimeout(function() {
+        controls.fadeOut('slow');
+      }, 750);
+    });
+    $('.animation-controls .play').click(function(){
+      start_animation();
+      $('.animation-controls .play').hide();
+      $('.animation-controls .stop').show();
+    })
+    $('.animation-controls .stop').click(function(){
+      stop_animation();
+      $('.animation-controls .play').show();
+      $('.animation-controls .stop').hide();
+    });
+
     // setting map
     var ratio = 1 / 2;
     window.width = window.innerWidth,
@@ -193,35 +222,5 @@ $(function() {
     scale = get_color_scale(data, colors);
     $('body').addClass('loaded');
     show_frame(0);
-  });
-
-  var pointer = $('<span></span>')
-              .attr('id', 'pointer')
-  $('#slider').append(pointer);
-
-  $('#slider .timeline').click(function(e) {
-    playing = false;
-    $('.animation-controls .play').show();
-    $('.animation-controls .stop').hide();
-    clearTimeout(window.frame_timeout);
-    move_pointer(e.pageX);
-  });
-  $('body').bind('mousemove click', function(e) {
-    var controls = $('.animation-controls');
-    controls.fadeIn('fast');
-    clearTimeout(window.fade_timeout);
-    window.fade_timeout = setTimeout(function() {
-      controls.fadeOut('slow');
-    }, 750);
-  });
-  $('.animation-controls .play').click(function(){
-    start_animation();
-    $('.animation-controls .play').hide();
-    $('.animation-controls .stop').show();
-  })
-  $('.animation-controls .stop').click(function(){
-    stop_animation();
-    $('.animation-controls .play').show();
-    $('.animation-controls .stop').hide();
   });
 });

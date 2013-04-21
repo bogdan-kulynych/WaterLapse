@@ -5,7 +5,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: #000 url(/images/loading.gif) center center no-repeat;
+    background: #000 url(../images/loading.gif) center center no-repeat;
     color: #fff;
     font-family: sans-serif;
     font-size: 11px;
@@ -15,7 +15,7 @@ body {
 }
 
 .map {
-    /*background: url(/images/world.jpg) 0 0;
+    /*background: url(images/world.jpg) 0 0;
     background-size: 100% 100%;*/
 }
 
