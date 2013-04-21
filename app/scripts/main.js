@@ -128,16 +128,19 @@ $(function() {
         .addClass('map')
         .attr("width", width)
         .attr("height", height);
-    $("body").append(canvas);
+    $("body").prepend(canvas);
 
     window.ctx = canvas[0].getContext("2d");
 
     scale = get_color_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
+    console.log(scale[0][0],
+    scale[scale.length - 1][0]);
     $('body').addClass('loaded');
     plot_array(ctx, data[0], 2.5, scale);
   });
 
-  // setting up controls
+  /*
+  // autohide
   $('body').bind('mousemove click', function() {
     var hide_timeout = 500;
     var fade_timeout = 500;
@@ -147,12 +150,11 @@ $(function() {
     window.slider_timeout = setTimeout(function() {
       $('#slider').fadeOut(fade_timeout);
     }, hide_timeout);
-  });
+  }); */
 
   var pointer = $('<div></div>').attr('id', 'pointer');
   $('#slider').append(pointer)
-              .disableSelection()
-
+              .disableSelection();
 
   $('#slider').click(function(e) {
     if (e.pageX <= timeline_width) {

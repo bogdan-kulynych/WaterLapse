@@ -1,4 +1,5 @@
 html {
+    position: relative;
     height: 100%;
 }
 body {
@@ -23,8 +24,8 @@ body {
 }
 
 #slider {
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    bottom: 4em;
     width: 100%;
     height: 2em;
     cursor: ew-resize;
@@ -45,4 +46,39 @@ body {
     width: 2px;
     height: 100%;
     background: red;
+}
+
+footer {
+    bottom: 0px;
+    padding: 1em;
+    position: absolute;
+}
+
+.legend {
+    display: inline-block;
+    width: 1em;
+    height: 0.9em;
+}
+.legend:nth-child(1) {
+    background: #EDECEA;
+}
+
+.legend:nth-child(2) {
+    background: #C8E1E7
+}
+
+.legend:nth-child(3) {
+    background: #ADD8EA;
+}
+
+.legend:nth-child(4) {
+    background: #7FB8D4;
+}
+
+.legend:nth-child(5) {
+    background: #4EA3C8;
+}
+
+.legend:nth-child(6) {
+    background: #2586AB;
 }
