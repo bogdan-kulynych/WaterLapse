@@ -18,12 +18,9 @@ $(function() {
 
   $('.animation-controls .play').click(function(){
     start_animation();
-    $('.animation-controls .play').hide()
-    $('.animation-controls .stop').show()
   })
+  $('.animation-controls .stop').click(function(){
     stop_animation();
-    $('.animation-controls .play').show()
-    $('.animation-controls .stop').hide()
   })
 
   // http://stackoverflow.com/questions/14329691/covert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection
@@ -135,10 +132,14 @@ $(function() {
     window.frame_timeout = setTimeout(function() {
       next_frame(true);
     }, animation_delay);
+    $('.animation-controls .play').hide()
+    $('.animation-controls .stop').show()
   };
 
   var stop_animation = function() {
     clearTimeout(window.frame_timeout);
+    $('.animation-controls .play').show()
+    $('.animation-controls .stop').hide()
   }
 
   $.fn.disableSelection = function() {
@@ -161,9 +162,10 @@ $(function() {
         }
       }
       timeline_width = $('#slider .timeline').width();
-      console.log(timeline_width);
+
     });
     $('#slider').fadeIn('slow');
+    $('.animation-controls .play').fadeIn('slow');
 
     // start_animation();
 
