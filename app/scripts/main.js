@@ -1,4 +1,4 @@
-$(function() {
+(function() {
   var datasource = '/data/precipitation-small.json';
 
   xhr = new XMLHttpRequest();
@@ -11,27 +11,33 @@ $(function() {
         var ungzipped = xhr.responseText;
         var data = JSON.parse(ungzipped);
         window.data = data;
-        $('body').addClass('loaded');
-        console.log(data);
 
-      plot_array(ctx, data[0]['data']);
+        var ratio = 1 / 2;
+        window.width = window.innerWidth,
+        window.height = ratio * width;
+
+        var canvas = $('<canvas></canvas>')
+            .addClass('map')
+            .attr("width", width)
+            .attr("height", height);
+        $("body").append(canvas);
+
+        var ctx = canvas[0].getContext("2d");
+        console.log(ctx);
+
+        plot_array(ctx, data[0]['data']);
       }
     };
   };
   xhr.send();
 
-  var width = 960,
-      height = 500;
+  var equirectangular = function(latitude, longitude) {
+    x = ((longitude + 180) * (width  / 360));
+    y = (((latitude * -1) + 90) * (height/ 180));
+    return [x, y]
+  };
 
-  var canvas = $('<canvas></canvas>')
-      .attr("width", width)
-      .attr("height", height);
-  $("body").append(canvas);
-
-  var ctx = canvas[0].getContext("2d");
-  console.log(ctx);
-
-  var convert_coordinates = function(latitude, longitude) {
+  var mercator = function(latitude, longitude) {
     x = (width*(180+longitude)/360)%width+(width/2);
     const PI = Math.PI;
     const tan = Math.tan;
@@ -46,18 +52,22 @@ $(function() {
     return [x - width / 2, y]
   };
 
+  var convert_coordinates = function(latitude, longitude) {
+    return equirectangular(latitude, longitude);
+  };
+
   var plot_array = function(ctx, array) {
+    console.log(array);
     for (var i = 0; i < array.length; ++i) {
       var obj = array[i];
 
       coords = convert_coordinates(obj['lat'], obj['lon']);
-      console.log(coords);
       x = coords[0], y = coords[1];
+
       ctx.beginPath();
       ctx.fillStyle = "white"
       ctx.arc(x, y, 1, 0, 2 * Math.PI, true);
       ctx.fill();
     }
-  }
-
-});
+  };
+})();

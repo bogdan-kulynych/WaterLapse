@@ -10,6 +10,12 @@ body {
     font-size: 18px;
     line-height: 1.5;
     height: 100%;
+    overflow: hidden;
+}
+
+canvas.map {
+    background: url(/images/world.jpg) 0 0;
+    background-size: 100% 100%;
 }
 
 .loaded {
