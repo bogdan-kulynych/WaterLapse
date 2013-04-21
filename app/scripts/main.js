@@ -1,7 +1,8 @@
 $(function() {
-  var datasource = '/data/precipitation-small.json';
-  var datessource = '/data/precipitation-small-dates.json';
+  var datasource = '/data/precipitation.json';
+  var datessource = '/data/precipitation-dates.json';
 
+  var yearskip = 4;
   var scale = [];
   var timeline_width = 0;
   var current_frame = 0;
@@ -110,12 +111,15 @@ $(function() {
     // displaying years in timeline
     $.getJSON(datessource, function(years) {
       for (var i = 0; i < years.length; ++i) {
-        var year = $('<li></li>').html(years[i]);
-        $('#slider span').append(year);
+        if (parseInt(years[i]) % yearskip == 0) {
+          var year = $('<li></li>').html(years[i]);
+          $('#slider span').append(year);
+        }
       }
       timeline_width = $('#slider span').width();
     });
 
+    // setting map
     var ratio = 1 / 2;
     window.width = window.innerWidth,
     window.height = ratio * width;
@@ -133,6 +137,7 @@ $(function() {
     plot_array(ctx, data[0], 2.5, scale);
   });
 
+  // setting up controls
   $('body').bind('mousemove click', function() {
     var hide_timeout = 500;
     var fade_timeout = 500;
