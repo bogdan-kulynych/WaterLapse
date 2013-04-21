@@ -19,11 +19,17 @@
             margin: 0 auto;
             background-color: white;
           }
-          img {
+          .screenshot {
             display: block;
             max-width: 500px;
             margin: 10px 0;
+          }
+          img {
             border: 1px solid #ddd;
+          }
+          .author {
+            margin: 10px;
+            vertical-align: top;
           }
           li {
             margin-bottom: 40px;
@@ -32,6 +38,10 @@
             display: block;
             text-align: center;
             margin-bottom: 60px;
+          }
+          header img {
+            width: 100px;
+            height: 100px;
           }
           h1 {
             font-size: 60px;
@@ -43,7 +53,14 @@
     <body>
       <header>
         <h1>Water Lapse</h1>
-        <p><a href="https://github.com/bogdan-kulynych">Bogdan Kulynych</a>, <a href="https://github.com/dira">Irina Dumitrascu</a>. <a href="http://spaceappschallenge.org">NASA Space App Challenge</a>, April 2013, Krakow</p>
+        <p>
+        <span class='author'><a href="https://github.com/bogdan-kulynych"><img src="https://secure.gravatar.com/avatar/145cca2717d32096af9cf8f7669aad31?s=100"/></a>
+          <a href="https://github.com/bogdan-kulynych">Bogdan Kulynych</a></span>
+        &
+        <span class='author'><a href="https://github.com/dira"><img src="https://secure.gravatar.com/avatar/fbda4e0a1939b1bfda21ac7121bef2de?s=100"/></a>
+          <a href="https://github.com/dira">Irina Dumitrascu</a></span>
+        </p>
+        <a href="http://spaceappschallenge.org">NASA Space App Challenge</a>, April 2013, Krakow</p>
       </header>
 
       <h2>We started from:</h2>
@@ -57,13 +74,13 @@
       <ul>
         <li>
         <p>A <a href="/index-animation.html">time-lapse animation of the precipitation data around the world from 1901 to 2012</a></p>
-          <a href="/index-animation.html"><img src='/images/precipitation.png'/></a>
+          <a href="/index-animation.html"><img class='screenshot' src='/images/precipitation.png'/></a>
           <p>Data from the GPCC project, <a href="ftp://ftp.dwd.de/pub/data/gpcc/html/fulldata_v6_doi_download.html">Full Data Reanalysis Version 6</a>
           <p>Warning: It will download <strong>250MB</strong>.</p>
         </li>
         <li>
         <p>A page where you can <a href="/world-precipitation">visually compare the precipitation in each month of the year, from 1901 to 2012</a></p>
-          <a href="/world-precipitation"><img src='/images/precipitation-evolution.png'/></a>
+          <a href="/world-precipitation"><img class='screenshot' src='/images/precipitation-evolution.png'/></a>
           <p>Data from the GPCC project, <a href="ftp://ftp.dwd.de/pub/data/gpcc/html/fulldata_v6_doi_download.html">Full Data Reanalysis Version 6</a>.
           <p>Images created with <a href="http://www.giss.nasa.gov/tools/panoply/">Panoply</a>.
           <p>Warning: It will download 1300 images, <strong>100MB</strong> in total.</p>
