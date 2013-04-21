@@ -18,9 +18,10 @@
     $("body").append(canvas);
 
     var ctx = canvas[0].getContext("2d");
+    ctx.globalAlpha = 0.6;
 
 
-    var scale = get_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
+    var color_scale = get_color_scale(data, ["rgba(0, 0, 0, 0.8)", '#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
     $('body').addClass('loaded');
 
     // XXX this should be in the data
@@ -70,7 +71,7 @@
   //   (-infinity, 1] -> red
   //   (1, 3]         -> blue
   //   (3, 5]         -> blue
-  var get_scale = function(data, colors) {
+  var get_color_scale = function(data, colors) {
     var min = Infinity;
     var max = -Infinity;
     for(date_index in data) {
