@@ -18,9 +18,12 @@
     $("body").append(canvas);
 
     var ctx = canvas[0].getContext("2d");
-    console.log(ctx);
 
-    plot_array(ctx, data[0]['data']);
+
+    var scale = get_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
+    $('body').addClass('loaded');
+
+    plot_array(ctx, data[0]['data'], scale);
   });
 
   $('body').bind('mousemove click', function() {
@@ -59,8 +62,42 @@
     return equirectangular(latitude, longitude);
   };
 
-  var plot_array = function(ctx, array) {
-    console.log(array);
+  // returns an array [value, color], sorted by value
+  // All values <= value, have color color
+  // result: [1, 'red'], [3, blue], [5, green] means:
+  //   (-infinity, 1] -> red
+  //   (1, 3]         -> blue
+  //   (3, 5]         -> blue
+  var get_scale = function(data, colors) {
+    var min = Infinity;
+    var max = -Infinity;
+    for(date_index in data) {
+      values = data[date_index].data;
+      for (i in values) {
+        v = values[i].value;
+        if (v > max) { max = v; }
+        if (v < min) { min = v; }
+      }
+    }
+    var size = max - min;
+    var step = size/colors.length;
+    var scale = []
+    for (var i=0; i<colors.length; i++) {
+      scale.push([min + (i + 1) * step, colors[i]]);
+    }
+    return scale;
+  }
+
+  var get_color = function(value, scale) {
+    for (var i=0; i<scale.length; i++) {
+      max = scale[i][0];
+      if (value <= max) {
+        return scale[i][1];
+      }
+    }
+  }
+
+  var plot_array = function(ctx, array, scale) {
     for (var i = 0; i < array.length; ++i) {
       var obj = array[i];
 
@@ -68,9 +105,9 @@
       x = coords[0], y = coords[1];
 
       ctx.beginPath();
-      ctx.fillStyle = "white"
-      ctx.arc(x, y, 1, 0, 2 * Math.PI, true);
+      ctx.arc(x, y, 4, 0, 2 * Math.PI, true);
+      ctx.fillStyle = get_color(obj['value'], scale)
       ctx.fill();
     }
-  };
+  }
 })();
