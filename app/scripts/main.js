@@ -16,6 +16,16 @@ $(function() {
     return [x, y]
   };
 
+  $('.animation-controls .play').click(function(){
+    start_animation();
+    $('.animation-controls .play').hide()
+    $('.animation-controls .stop').show()
+  })
+    stop_animation();
+    $('.animation-controls .play').show()
+    $('.animation-controls .stop').hide()
+  })
+
   // http://stackoverflow.com/questions/14329691/covert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection
   var mercator = function(latitude, longitude) {
     var x = (width*(180+longitude)/360)%width+(width/2);
@@ -155,7 +165,7 @@ $(function() {
     });
     $('#slider').fadeIn('slow');
 
-    start_animation();
+    // start_animation();
 
     // setting map
     var ratio = 1 / 2;
