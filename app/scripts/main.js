@@ -1,45 +1,11 @@
-(function() {
+$(function() {
   var datasource = '/data/precipitation-small.json';
+  var datessource = '/data/precipitation-small-dates.json';
 
-  xhr = new XMLHttpRequest();
-  xhr.open('GET', datasource, true);
-
-  $.getJSON(datasource, function(data) {
-    window.data = data;
-
-    var ratio = 1 / 2;
-    window.width = window.innerWidth,
-    window.height = ratio * width;
-
-    var canvas = $('<canvas></canvas>')
-        .addClass('map')
-        .attr("width", width)
-        .attr("height", height);
-    $("body").append(canvas);
-
-    var ctx = canvas[0].getContext("2d");
-    ctx.globalAlpha = 0.6;
-
-
-    var color_scale = get_color_scale(data, ["rgba(0, 0, 0, 0.8)", '#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
-    $('body').addClass('loaded');
-
-    // XXX this should be in the data
-    var resolution = 2.5;
-    plot_array(ctx, data[0]['data'], resolution, color_scale);
-  });
-
-  $('body').bind('mousemove click', function() {
-    var hide_timeout = 500;
-    var fade_timeout = 500;
-
-    $('#slider').fadeIn(fade_timeout);
-    clearTimeout(window.slider_timeout);
-    window.slider_timeout = setTimeout(function() {
-      console.log('slider hides now');
-      $('#slider').fadeOut(fade_timeout);
-    }, hide_timeout);
-  });
+  var scale = [];
+  var timeline_width = 0;
+  var current_frame = 0;
+  var frames_count = 0;
 
   // http://stackoverflow.com/questions/14034455/translating-lat-long-to-actual-screen-x-y-coordinates-on-a-equirectangular-map
   var equirectangular = function(latitude, longitude) {
@@ -61,6 +27,7 @@
     return [x - width / 2, y]
   };
 
+  // returns [x, y] which corresponds to latitude and longitude
   var convert_coordinates = function(latitude, longitude) {
     return equirectangular(latitude, longitude);
   };
@@ -74,17 +41,17 @@
   var get_color_scale = function(data, colors) {
     var min = Infinity;
     var max = -Infinity;
-    for(date_index in data) {
-      values = data[date_index].data;
-      for (var i =0; i < values.length; i++) {
-        var v = values[i].value;
+    for(var i = 0; i < data.length; ++i) {
+      values = data[i];
+      for (i in values) {
+        v = values[i].value;
         if (v > max) { max = v; }
         if (v < min) { min = v; }
       }
     }
     var size = max - min;
     var step = size/(colors.length-1);
-    var scale = [[min, colors[0]]]
+    scale = [[min, colors[0]]]
     for (var i=1; i<colors.length; i++) {
       scale.push([min + i * step, colors[i]]);
     }
@@ -102,6 +69,7 @@
   }
 
   var plot_array = function(ctx, array, resolution, color_scale) {
+    ctx.clearRect(0, 0, width, height);
     for (var i = 0; i < array.length; ++i) {
       var obj = array[i];
 
@@ -120,5 +88,72 @@
       ctx.fillStyle = color;
       ctx.fill();
     }
+  };
+
+  var show_frame = function(r) {
+    current_frame = Math.round(r * (frames_count - 1));
+    console.log(scale);
+    plot_array(window.ctx, window.data[current_frame], 2.5, scale)
   }
-})();
+
+  $.fn.disableSelection = function() {
+      return this
+               .attr('unselectable', 'on')
+               .css('user-select', 'none')
+               .on('selectstart', false);
+  };
+
+  $.getJSON(datasource, function(data) {
+    window.data = data;
+    frames_count = Object.keys(data).length;
+
+    // displaying years in timeline
+    $.getJSON(datessource, function(years) {
+      for (var i = 0; i < years.length; ++i) {
+        var year = $('<li></li>').html(years[i]);
+        $('#slider span').append(year);
+      }
+      timeline_width = $('#slider span').width();
+    });
+
+    var ratio = 1 / 2;
+    window.width = window.innerWidth,
+    window.height = ratio * width;
+
+    var canvas = $('<canvas></canvas>')
+        .addClass('map')
+        .attr("width", width)
+        .attr("height", height);
+    $("body").append(canvas);
+
+    window.ctx = canvas[0].getContext("2d");
+
+    scale = get_color_scale(data, ['#EDECEA',  '#C8E1E7',  '#ADD8EA',  '#7FB8D4',  '#4EA3C8',  '#2586AB']);
+    $('body').addClass('loaded');
+    plot_array(ctx, data[0], 2.5, scale);
+  });
+
+  $('body').bind('mousemove click', function() {
+    var hide_timeout = 500;
+    var fade_timeout = 500;
+
+    $('#slider').fadeIn(fade_timeout);
+    clearTimeout(window.slider_timeout);
+    window.slider_timeout = setTimeout(function() {
+      $('#slider').fadeOut(fade_timeout);
+    }, hide_timeout);
+  });
+
+  var pointer = $('<div></div>').attr('id', 'pointer');
+  $('#slider').append(pointer)
+              .disableSelection()
+
+
+  $('#slider').click(function(e) {
+    if (e.pageX <= timeline_width) {
+      pointer.css({'left': e.pageX});
+      show_frame(parseInt(pointer.css('left')) / timeline_width);
+    }
+  });
+
+});
