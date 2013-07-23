@@ -148,17 +148,21 @@
             }
         };
 
+        var formatDate = function(frame) {
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
+            date = months[frame % 12] + ' ' +
+                      common.years[Math.floor(frame / 12)];
+            $('.hover').html(date);
+        };
+
         var showFrame = function(frame) {
             common.currentFrame = frame;
             if (common.currentFrame < common.framesCount) {
-                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 plotArray(common.ctx, common.data[frame], 2.5, common.scale);
-
-                var date = months[frame % 12] + ' ' +
-                              common.years[Math.floor(frame / 12)];
-                $('.hover').html(date);
             }
+            formatDate(frame);
         };
 
         var nextFrame = function(link) {
@@ -204,6 +208,7 @@
                     }
                 }
                 common.timelineWidth = $('#slider .timeline').width();
+                formatDate(0);
             });
 
             $('#slider').fadeIn('slow');
