@@ -264,7 +264,9 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/*'
+                        'styles/fonts/*',
+                        'data/*',
+                        'world-precipitation/*'
                     ]
                 }, {
                     expand: true,
@@ -321,7 +323,6 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'cssmin',
-        'concat',
         'uglify',
         'copy',
         'rev',
