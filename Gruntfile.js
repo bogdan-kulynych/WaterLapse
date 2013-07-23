@@ -266,7 +266,6 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/*',
                         'data/*',
-                        'world-precipitation/*'
                     ]
                 }, {
                     expand: true,
