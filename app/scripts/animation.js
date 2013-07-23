@@ -2,9 +2,6 @@
     'use strict';
 
     $(function() {
-        // Warning: The following code is extremely spaghetti
-        // Done in 1.5 day on NASA Space Challenge Hackathon
-
         // Configuration
         var datasource = 'data/precipitation.json',
             datessource = 'data/precipitation-dates.json',
