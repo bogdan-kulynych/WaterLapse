@@ -173,9 +173,6 @@ module.exports = function (grunt) {
         // not enabled since usemin task does concat and uglify
         // check index.html to edit your build targets
         // enable this task if you prefer defining your build targets here
-        /*uglify: {
-            dist: {}
-        },*/
         rev: {
             dist: {
                 files: {
@@ -192,14 +189,14 @@ module.exports = function (grunt) {
             options: {
                 dest: '<%= yeoman.dist %>'
             },
-            html: '<%= yeoman.app %>/index.html'
+            html: '<%= yeoman.app %>/*.html'
         },
         usemin: {
             options: {
                 dirs: ['<%= yeoman.dist %>']
             },
             html: ['<%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
+            css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
         },
         imagemin: {
             dist: {
@@ -223,12 +220,20 @@ module.exports = function (grunt) {
         },
         cssmin: {
             dist: {
-                files: {
-                    '<%= yeoman.dist %>/styles/main.css': [
-                        '.tmp/styles/{,*/}*.css',
-                        '<%= yeoman.app %>/styles/{,*/}*.css'
-                    ]
-                }
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles/',
+                src: '*.css',
+                dest: '<%= yeoman.dist %>/styles/',
+                ext: '.css'
+            }
+        },
+        uglify: {
+            dist: {
+                expand: true,
+                cwd: '<%= yeoman.app %>/scripts/',
+                src: '{,*/}*.js',
+                dest: '<%= yeoman.dist %>/scripts/',
+                ext: '.js'
             }
         },
         htmlmin: {
@@ -264,8 +269,7 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/*',
-                        'data/*',
+                        'styles/fonts/*'
                     ]
                 }, {
                     expand: true,
@@ -325,7 +329,7 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'rev',
-        'usemin'
+        'usemin',
     ]);
 
     grunt.registerTask('default', [
