@@ -3,8 +3,8 @@
 
     $(function() {
         // Configuration
-        var datasource = 'data/precipitation.json',
-            datessource = 'data/precipitation-dates.json',
+        var datasource = '//dl.dropboxusercontent.com/u/195619889/WaterLapse/data/precipitation.json',
+            datessource = '//dl.dropboxusercontent.com/u/195619889/WaterLapse/data/precipitation-dates.json',
             colors = ['#EDECEA',  '#C8E1E7',  '#ADD8EA',
                       '#7FB8D4',  '#4EA3C8',  '#2586AB'],
             animationDelay = 200,

@@ -6,7 +6,7 @@
             months = ['January', 'February', 'March', 'April', 'May',
                       'June', 'July', 'August', 'September', 'October',
                        'November', 'December'],
-            dataFolderUrl = 'images/frames/';
+            dataFolderUrl = '//dl.dropboxusercontent.com/u/195619889/WaterLapse/frames/';
 
         var $body = $('body');
 
