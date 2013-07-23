@@ -128,7 +128,7 @@
         var movePointer = function(x, nodraw) {
             var pointer = $('#pointer');
             if (x <= common.timelineWidth) {
-                pointer.stop().animate({
+                pointer.css({
                     'left': x + 'px'
                 });
                 if (!nodraw) {
@@ -140,11 +140,12 @@
             var hover = $('.hover');
             if (!hover.is(':visible')) {
                 hover.fadeIn('slow');
+            } else {
+                hover.css({
+                    'left': x + 'px',
+                    'top': ($('#pointer').offset.top - 30) + 'px'
+                });
             }
-            hover.animate({
-                'left': x + 'px',
-                'top': ($('#pointer').offset.top - 20) + 'px'
-            });
         };
 
         var showFrame = function(frame) {
